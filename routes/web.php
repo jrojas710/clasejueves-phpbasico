@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,102 +23,71 @@ Route::get('/contactanos', function () {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <style>
-            * {
-                box-sizing: border-box;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
             body {
                 margin: 0;
                 min-height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background: radial-gradient(circle at top, #0f172a, #020617);
+                background: linear-gradient(135deg, #020617, #0f172a);
+                font-family: Arial, Helvetica, sans-serif;
                 color: white;
-                overflow: hidden;
             }
 
-            .bg-glow {
-                position: absolute;
-                width: 400px;
-                height: 400px;
-                background: radial-gradient(circle, rgba(99,102,241,0.35), transparent 70%);
-                filter: blur(80px);
-                animation: float 8s ease-in-out infinite alternate;
-            }
-
-            .bg-glow.two {
-                top: 10%;
-                left: 10%;
-                background: radial-gradient(circle, rgba(236,72,153,0.35), transparent 70%);
-                animation-delay: 2s;
-            }
-
-            .bg-glow.three {
-                bottom: 10%;
-                right: 10%;
-                background: radial-gradient(circle, rgba(34,211,238,0.35), transparent 70%);
-                animation-delay: 4s;
-            }
-
-            @keyframes float {
-                from { transform: translateY(0px); }
-                to { transform: translateY(-40px); }
-            }
-
-            .panel {
-                position: relative;
-                z-index: 10;
+            .container {
                 width: 100%;
                 max-width: 480px;
                 padding: 40px;
                 border-radius: 20px;
-                background: rgba(255,255,255,0.05);
+                background: rgba(255, 255, 255, 0.06);
                 backdrop-filter: blur(12px);
-                border: 1px solid rgba(255,255,255,0.15);
-                box-shadow: 0 0 40px rgba(99,102,241,0.3);
-                animation: enter 1s ease;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
+                animation: appear 1s ease;
             }
 
-            @keyframes enter {
-                from { opacity: 0; transform: scale(0.9); }
-                to { opacity: 1; transform: scale(1); }
+            @keyframes appear {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
             }
 
-            .panel h1 {
+            h1 {
                 margin: 0 0 10px;
-                font-size: 28px;
-                letter-spacing: 1px;
-                background: linear-gradient(90deg, #818cf8, #22d3ee, #ec4899);
+                font-size: 26px;
+                background: linear-gradient(90deg, #38bdf8, #a78bfa, #f472b6);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
 
-            .panel p {
-                margin-bottom: 25px;
+            .subtitle {
                 color: #cbd5f5;
                 font-size: 14px;
+                margin-bottom: 25px;
             }
 
-            .field {
+            .form-group {
                 margin-bottom: 20px;
             }
 
-            .field input,
-            .field textarea {
+            label {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 13px;
+                color: #e5e7eb;
+            }
+
+            input, textarea {
                 width: 100%;
                 padding: 12px 14px;
                 border-radius: 10px;
                 border: none;
                 outline: none;
-                background: rgba(255,255,255,0.08);
+                background: rgba(255, 255, 255, 0.08);
                 color: white;
                 font-size: 14px;
             }
 
-            .field input::placeholder,
-            .field textarea::placeholder {
+            input::placeholder, textarea::placeholder {
                 color: #94a3b8;
             }
 
@@ -129,55 +100,58 @@ Route::get('/contactanos', function () {
                 font-weight: bold;
                 letter-spacing: 1px;
                 color: #020617;
-                background: linear-gradient(90deg, #818cf8, #22d3ee, #ec4899);
-                box-shadow: 0 0 20px rgba(99,102,241,0.6);
+                background: linear-gradient(90deg, #38bdf8, #a78bfa, #f472b6);
+                box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
 
             .btn:hover {
                 transform: scale(1.03);
-                box-shadow: 0 0 30px rgba(236,72,153,0.9);
-            }
-
-            .footer {
-                text-align: center;
-                margin-top: 20px;
-                font-size: 12px;
-                color: #94a3b8;
-                opacity: 0.8;
+                box-shadow: 0 0 30px rgba(244, 114, 182, 0.9);
             }
         </style>
     </head>
     <body>
 
-        <div class="bg-glow"></div>
-        <div class="bg-glow two"></div>
-        <div class="bg-glow three"></div>
+        <div class="container">
+            <h1>Contáctanos</h1>
+            <p class="subtitle">Completa el formulario y te responderemos pronto</p>
 
-        <div class="panel">
-            <h1>Transmisión Abierta</h1>
-            <p>Envía tu señal al sistema. Nuestro equipo recibirá tu mensaje en breve.</p>
-
-            <form>
-                <div class="field">
-                    <input type="email" placeholder="Canal de contacto (email)" required>
+            <form action="/store" method="GET">
+                <div class="form-group">
+                    <label for="email">Correo electrónico *</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="tu@email.com" 
+                        required
+                    >
                 </div>
 
-                <div class="field">
-                    <textarea rows="4" placeholder="Escribe tu mensaje cifrado..." required></textarea>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje *</label>
+                    <textarea 
+                        id="mensaje" 
+                        name="mensaje" 
+                        rows="4" 
+                        placeholder="Escribe tu mensaje aquí..." 
+                        required
+                    ></textarea>
                 </div>
 
-                <button class="btn" type="submit">ENVIAR SEÑAL</button>
+                <button type="submit" class="btn">Enviar mensaje 🚀</button>
             </form>
-
-            <div class="footer">
-                Sistema de comunicación activo · 24/7
-            </div>
         </div>
 
     </body>
     </html>
     ';
+});
+
+Route::get('/store', function(Request $request) {
+    print_r($request->all());
+
 });
 
 
